@@ -9,6 +9,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 document are to be interpreted as described in [RFC2119].
 ### Terminology
 + *Social History* - the immutable directed acyclic graph of all content and control messages making up the totality of a user's social interactions.
++ *Message Frame* - the social history message container that establishes message linkage, identity, signature, and confidentiality.
++ *Content Message* - A message in a social history containing information intended for user presentation.
++ *Control Message* - A message in a social history containing metadata about a user.
 
 ## Social history structure
 ### Message Format
