@@ -15,3 +15,9 @@ XSMP exists to fulfill the following goals:
 2. _Social systems should not be all or nothing_ - Social systems should work together to share your social profile, not carve it up and lock it away in walled gardens and data silos. Social systems should be federated and forced to compete on quality of service, not quantity of users.
 3. _Users should only be as public as they wish to be_ - How much you share and to whom you share should be completely in your control. Users should have fine-grained control over where their information is used and over who can see their content.
 4. _Users should be as anonymous as they wish to be_ - Users should have complete control over how much or how little of their identity is available to others. A user should be able to actively participate in a social setting without revealing anything at all about themselves.
+
+## License
+All XSMP specification documents are licensed [Creative Commons 4.0 Attribution Share-Alike](https://creativecommons.org/licenses/by-sa/4.0/)
+![cc40atsa](https://licensebuttons.net/l/by-sa/4.0/88x31.png)
+
+Why share-alike? I believe the specification of XSMP should be open for all to read. I also believe that to preserve the open nature of the platform, all derivative specifications must also be open for all to read. Implementations of this specification are free to license their source code as they see fit.
