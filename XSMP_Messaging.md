@@ -131,18 +131,70 @@ Encrypted messages can be shared with multiple individuals or groups. When shari
 5. Decode the resulting plaintext using DER encoding to get the content of the message.
 
 ## Identity Control Messages
-### ANNOUNCE
-### IDENTITY
+Identity control messages are used to manage the cryptographic, public, and private identity of a social history's owner. Announce messages advertise new public keys. Identity messages advertise key-value pairs for the user's demographic information.
+
+### Announce Message
+Media-type: `application/xsmp-announce`
+
+Announce messages are used for advertising the cryptographic identity of the user by publishing the user's X.509 public key certificate. The first announce message in a social history establishes a user's initial identity. Subsequent announce messages are used for rotating the user's public key. 
+
+The announce message has the following structure:
+
+    Announce-Message ::= SEQUENCE
+    {
+        x509-certificate OCTET STRING,
+        signature Digital-Signature
+    }
+
++ *x509-certificate* - The binary content of the user's initial or new X.509 certificate.
++ *signature* - A digital signature of the user's previous X.509 certificate computed using the new certificate's private key.
+
+For the first message in a social history MUST be an announce message. The `signature` field of the announce message MUST be signed by the initial private key. The message frame for the initial announce message MUST be signed by the initial private key.
+
+Subsequent announce messages are used to rotate the user's public and private keys. The new private key MUST sign the old X.509 public key certificate and store the signature in the `signatue` field of the announce message. The old private key MUST sign the message frame containing the announce message. This combination produces a complete message that proves that the user is in control of both the new and old private keys.
+
+Announce messages MUST NOT be encrypted by the message frame.
+
+### Identity Message
+Media-type: `application/xsmp-identity`
+
+Identity messages are used for advertising demographic information about the user. Identity messages are made up of a set of namespaced key-value pairs and different systems are free to introduce new attributes as they see fit. Each pair describes one attribute about the user.
+
+Each announce message patches the one before it. If two announce messages contain the same key, the value in the most recent announce message MUST supersede any older values. Identity attributes that have not changed since the last announce message SHOULD NOT be included in a new announce message. Explicitly setting a value to null in an announce message MUST clear any previous values. User agent's MUST NOT modify attribute values for keys they do not understand.
+
+The identity message has the following structure:
+
+    Identity-Message ::= SEQUENCE
+    {
+        attributes SEQUENCE OF Identity-Attribute
+    }
+
+    Identity-Attribute ::= Identity-Attribute
+    {
+        attribute PRINTABLE STRING(SIZE(128)),
+        value UTF8STRING STRING(SIZE(128))
+    }
+
++ *attribute* - A unique system-readable identifier identifying the name of the identity attribute. The `attribute` field MUST be namespaced in the format `organization/attributeName`.
++ *value* - The identity attribute's UTF8, human-readable value.
+
+Identity messages MAY be encrypted by the message frame. Identity messages MUST include a `last-same-message` pointer in the message frame's `parents` section.
 
 ## Friend Control Messages
-### FRIEND_REQUEST
-### FRIEND_ADD
+### Follow
+### Friend Request
+### Friend Add
 #### Friend Keys
-### FREQUENCY_HOP
-### DELEGATE
+### Frequency Hop
+### Delegate
+
+## Time Control Messages
+### Year
+### Month
+### Week
 
 ## Content Messages
-### CONTENT
+### Content
 
 ## References
 [AES-256] Advanced Encryption Standard (AES). http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
